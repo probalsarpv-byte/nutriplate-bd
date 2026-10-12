@@ -1,19 +1,43 @@
 node_modules/
 .expo/
+.expo-shared/
 dist/
+web-build/
 npm-debug.*
+yarn-error.log*
+*.log
+
+# Keystores & Signing credentials
 *.jks
 *.p8
 *.p12
 *.key
+*.keystore
+*.pem
 *.mobileprovision
 *.orig.*
-web-build/
 
-# macOS
+# Android & iOS Build Binaries
+*.apk
+*.aab
+*.ipa
+
+# Local Database Files
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
 .DS_Store
-*.pem
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+.idea/
+tmp/
 
 # Local env files
 .env*.local
 .env
+.env*
