@@ -278,7 +278,39 @@ class MealDatabase implements IMealDatabase {
     }
 
     this.isUsingFallback = true;
+    this.loadFromWebStorage();
     this.isInitialized = true;
+  }
+
+  private loadFromWebStorage(): void {
+    try {
+      if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+        const stored = window.localStorage.getItem('nutriplate_saved_meals_v1');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            parsed.forEach((m: SavedMeal) => {
+              if (m && m.id) {
+                this.fallbackStore.set(m.id, m);
+              }
+            });
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore in non-browser environments
+    }
+  }
+
+  private persistToWebStorage(): void {
+    try {
+      if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+        const allMeals = Array.from(this.fallbackStore.values());
+        window.localStorage.setItem('nutriplate_saved_meals_v1', JSON.stringify(allMeals));
+      }
+    } catch (e) {
+      // Ignore in non-browser environments
+    }
   }
 
   private async runMigrations(): Promise<void> {
@@ -331,6 +363,7 @@ class MealDatabase implements IMealDatabase {
 
     // Always update fallback store
     this.fallbackStore.set(meal.id, { ...meal });
+    this.persistToWebStorage();
 
     if (!this.isUsingFallback && this.db) {
       try {
@@ -411,6 +444,7 @@ class MealDatabase implements IMealDatabase {
   public async deleteMeal(id: string): Promise<boolean> {
     await this.init();
     const existed = this.fallbackStore.delete(id);
+    this.persistToWebStorage();
 
     if (!this.isUsingFallback && this.db) {
       try {
