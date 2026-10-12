@@ -222,6 +222,20 @@ export default function RecipesScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity
+                style={[
+                  styles.logRecipeBtn,
+                  { backgroundColor: theme.surfaceMuted, borderColor: theme.borderSubtle },
+                ]}
+                onPress={() => router.push(`/meal/new?recipeId=${r.id}`)}
+                activeOpacity={0.7}
+              >
+                <Utensils size={13} color={theme.text} />
+                <Text style={[styles.logBtnText, { color: theme.text }]}>
+                  {language === 'bn' ? 'মিলে যোগ' : 'Make Meal'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 style={[styles.deleteBtn, { borderColor: theme.borderSubtle }]}
                 onPress={() => removeRecipe(r.id)}
                 activeOpacity={0.7}
@@ -486,6 +500,8 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xs,
     borderTopWidth: 1,
     borderTopColor: 'rgba(150,150,150,0.1)',
+    flexWrap: 'wrap',
+    gap: 6,
   },
   recipeMacroRow: {
     flexDirection: 'row',

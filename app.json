@@ -2,7 +2,7 @@
   "expo": {
     "name": "NutriPlate BD",
     "slug": "nutriplate-bd",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "nutriplate",
@@ -22,6 +22,7 @@
         "backgroundColor": "#173C34"
       },
       "package": "com.nutriplate.bd",
+      "versionCode": 2,
       "permissions": [
         "RECEIVE_BOOT_COMPLETED"
       ]

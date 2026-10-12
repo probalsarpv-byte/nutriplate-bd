@@ -111,8 +111,20 @@ export default function SmartMealMakerScreen() {
       if (rice) addItem(rice, 180, 'g');
       if (rohu) addItem(rohu, 100, 'g');
       if (shak) addItem(shak, 150, 'g');
+    } else if (params.recipeId) {
+      const rec = recipes.find((r) => r.id === params.recipeId);
+      if (rec) {
+        initDraft({
+          name: language === 'bn' ? `${rec.name} মিল` : `${rec.name} Meal`,
+          category: 'lunch',
+          notes: language === 'bn' ? `রেসিপি ল্যাব থেকে তৈরি: ${rec.name}` : `Created from Recipe Lab: ${rec.name}`,
+        });
+        const food = foodDatabaseAdapter.registerCustomRecipeAsFood(rec);
+        const singleServingGrams = Math.round(rec.cookedYieldWeightGrams / (rec.totalServings || 1)) || 150;
+        addItem(food, singleServingGrams, 'g');
+      }
     }
-  }, [editMealId, source]);
+  }, [editMealId, source, params.recipeId]);
 
   // Compute live functional alerts against active meal
   const liveAlerts = useMemo(() => {
